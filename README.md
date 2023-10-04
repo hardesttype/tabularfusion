@@ -1,2 +1,2 @@
 # tabularfusion
-A deep learning framework for multisource tabular data transformers
+A simple deep learning framework for multisource tabular data transformers
