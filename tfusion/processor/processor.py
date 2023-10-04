@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from typing import List
 
+from .base import DataProcessor
+
 
 class NumProcessor(DataProcessor):
     """Process numeric variables.
