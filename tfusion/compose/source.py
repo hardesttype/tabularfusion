@@ -136,6 +136,7 @@ class SequentialDataSource(DataSource):
         self.inverted_index = self.data.loc[:, [self.id_column]]\
                     .assign(index=np.arange(len(self.data)))\
                     .groupby(self.id_column)['index'].apply(list)
+        self.index = self.inverted_index.index
         self.length = self.inverted_index.apply(len).rename('length')
         self.length = self.length.astype(self.select_int_dtype(self.length.max()), copy=False)
         self.inverted_index = self.inverted_index\
@@ -154,6 +155,7 @@ class FlatDataSource(DataSource):
                     .assign(index=np.arange(len(self.data)))\
                     .set_index(self.id_column)['index']\
                     .astype(self.index_dtype, copy=False)
+        self.index = self.inverted_index.index
         self.length = pd.Series(
             np.ones(len(self.data)),
             index = self.inverted_index.index,
