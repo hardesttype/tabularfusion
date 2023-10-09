@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
 
+from ..processor.base import DataProcessor
+
 
 class DataSource(BaseEstimator, TransformerMixin):
     """
