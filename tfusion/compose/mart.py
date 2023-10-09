@@ -52,6 +52,7 @@ class DataMart(BaseEstimator, TransformerMixin):
 
         output = dict()
         output[self.data_sources[0].id_column] = index
+        output['total_lenght'] = [0 for i in range(len(index))]
         for data_source in self.data_sources:
             output[data_source.source_name] = data_source[index]\
             .groupby(data_source.id_column)\
@@ -65,6 +66,10 @@ class DataMart(BaseEstimator, TransformerMixin):
             .to_dict(orient='list')
             output[data_source.source_name]['length'] =\
             pd.Series([data_source.length.get(i, 0) for i in index], index=index).values
+            output['total_lenght'] = [
+                output['total_lenght'][i] + output[data_source.source_name]['length'][i] 
+                for i in range(len(index))
+            ]
         return output
 
     @staticmethod
