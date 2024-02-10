@@ -136,6 +136,8 @@ class DataSource(BaseEstimator, TransformerMixin):
 
         output = pd.DataFrame()
         for col in feature_columns:
+            if col is None:
+                continue
             output[col] = X.groupby(self.id_column)[col].apply(lambda x: x.to_numpy())
             output['_length'] = X.groupby(self.id_column).apply(len)
 
