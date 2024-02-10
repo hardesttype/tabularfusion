@@ -127,6 +127,20 @@ class DataSource(BaseEstimator, TransformerMixin):
 
         return self.data.iloc[ids.dropna()]
 
+    def convert_to_numpy_sequences(self, X, add_sort_column=True, sort_ascending=None):
+        feature_columns = self.column_list()
+        feature_columns = feature_columns[1:] if add_sort_column else feature_columns[2:]
+
+        if sort_ascending is not None:
+            X.sort_values([self.id_column, self.sort_column], ascending=sort_ascending, inplace=True)
+
+        output = pd.DataFrame()
+        for col in feature_columns:
+            output[col] = X.groupby(self.id_column)[col].apply(lambda x: x.to_numpy())
+            output['_length'] = X.groupby(self.id_column).apply(len)
+
+        return output
+
 
 class SequentialDataSource(DataSource):
     def wrap(self, X):
